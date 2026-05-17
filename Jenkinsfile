@@ -63,12 +63,17 @@ pipeline {
 
         stage('Clean Old Reports') {
             steps {
-                echo 'Cleaning old Allure report files...'
+                echo 'Cleaning old Allure report files and creating runtime folders...'
                 bat '''
                     for /f "delims=" %%i in ('wsl -d Ubuntu wslpath -a "%WORKSPACE%"') do set WSL_WORKSPACE=%%i
 
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && mkdir -p logs"
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && mkdir -p reports/allure-results"
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && mkdir -p reports/allure-report"
+
                     wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && rm -rf reports/allure-results/*"
                     wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && rm -rf reports/allure-report/*"
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && rm -f logs/execution.log"
                 '''
             }
         }
