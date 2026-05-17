@@ -35,9 +35,7 @@ def before_all(context):
     context.base_url = get_base_url(context.env)
 
     # Common API headers
-    context.headers = {
-        "Content-Type": "application/json"
-    }
+    context.headers = {"Content-Type": "application/json"}
 
     context.logger.info("Test execution started")
     context.logger.info(f"Selected Environment: {context.env}")

@@ -14,7 +14,7 @@ So we handle response carefully instead of assuming it is always a dictionary.
 
 from behave import given, when, then
 
-from payloads.add_book_payload import add_book_payload, add_book_payload_with_author
+from payloads.add_book_payload import add_book_payload_with_author
 from resources.api_resources import ApiResources
 from utilities.api_client import APIClient
 from utilities.assertions import assert_status_code, assert_equals
@@ -41,16 +41,12 @@ def step_user_has_already_added_book(context):
 
     # Create Add Book request payload
     payload = add_book_payload_with_author(
-        isbn=context.isbn,
-        aisle=context.aisle,
-        author=context.author
+        isbn=context.isbn, aisle=context.aisle, author=context.author
     )
 
     # Send POST request to add a new book
     add_response = APIClient.post(
-        url=add_book_url,
-        payload=payload,
-        headers=context.headers
+        url=add_book_url, payload=payload, headers=context.headers
     )
 
     # Validate Add Book API status code
@@ -74,9 +70,7 @@ def step_user_sends_get_request_using_book_id(context):
 
     # Send GET request with ID query parameter
     context.response = APIClient.get(
-        url=context.url,
-        headers=context.headers,
-        params={"ID": context.book_id}
+        url=context.url, headers=context.headers, params={"ID": context.book_id}
     )
 
     # Convert response into JSON
@@ -94,9 +88,7 @@ def step_user_sends_get_request_using_author_name(context):
 
     # Send GET request with AuthorName query parameter
     context.response = APIClient.get(
-        url=context.url,
-        headers=context.headers,
-        params={"AuthorName": context.author}
+        url=context.url, headers=context.headers, params={"AuthorName": context.author}
     )
 
     # Print response text for debugging if API does not return valid JSON
@@ -156,8 +148,10 @@ def step_response_should_contain_book_list_for_author(context):
 
     # Check whether the recently added book is available in author response
     matching_books = [
-        book for book in context.response_json
-        if book.get("isbn") == context.isbn and str(book.get("aisle")) == str(context.aisle)
+        book
+        for book in context.response_json
+        if book.get("isbn") == context.isbn
+        and str(book.get("aisle")) == str(context.aisle)
     ]
 
     # Validate matching book exists
@@ -181,11 +175,7 @@ def step_get_book_response_schema_should_be_valid(context):
     from utilities.assertions import validate_json_schema
 
     # Build schema file path
-    schema_path = os.path.join(
-        os.getcwd(),
-        "schemas",
-        "get_book_response_schema.json"
-    )
+    schema_path = os.path.join(os.getcwd(), "schemas", "get_book_response_schema.json")
 
     # If response is a list, validate first object
     if isinstance(context.response_json, list):

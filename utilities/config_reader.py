@@ -16,7 +16,6 @@ behave -D env=qa
 import configparser
 import os
 
-
 # Get the base project directory path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,12 +32,7 @@ def get_config(env="qa"):
     """
 
     # Build environment config file path dynamically
-    config_file_path = os.path.join(
-        BASE_DIR,
-        "config",
-        "environments",
-        f"{env}.ini"
-    )
+    config_file_path = os.path.join(BASE_DIR, "config", "environments", f"{env}.ini")
 
     # Validate whether config file exists
     if not os.path.exists(config_file_path):

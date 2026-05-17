@@ -36,16 +36,11 @@ def step_user_has_added_book_for_delete_operation(context):
     add_book_url = context.base_url + ApiResources.ADD_BOOK
 
     # Create Add Book request payload
-    payload = add_book_payload(
-        isbn=context.isbn,
-        aisle=context.aisle
-    )
+    payload = add_book_payload(isbn=context.isbn, aisle=context.aisle)
 
     # Send Add Book API request
     add_response = APIClient.post(
-        url=add_book_url,
-        payload=payload,
-        headers=context.headers
+        url=add_book_url, payload=payload, headers=context.headers
     )
 
     # Validate Add Book API response status
@@ -72,9 +67,7 @@ def step_user_sends_post_request_to_delete_book_api(context):
 
     # Send Delete Book API request
     context.response = APIClient.post(
-        url=context.url,
-        payload=context.payload,
-        headers=context.headers
+        url=context.url, payload=context.payload, headers=context.headers
     )
 
     # Convert Delete Book response into JSON
@@ -96,10 +89,7 @@ def step_delete_response_message_should_be_success(context):
     Validates Delete Book API success message.
     """
 
-    assert_equals(
-        context.response_json["msg"],
-        "book is successfully deleted"
-    )
+    assert_equals(context.response_json["msg"], "book is successfully deleted")
 
 
 @then("Delete Book API response schema should be valid")
@@ -113,9 +103,7 @@ def step_delete_book_response_schema_should_be_valid(context):
 
     # Build schema file path
     schema_path = os.path.join(
-        os.getcwd(),
-        "schemas",
-        "delete_book_response_schema.json"
+        os.getcwd(), "schemas", "delete_book_response_schema.json"
     )
 
     # Validate response JSON against schema
