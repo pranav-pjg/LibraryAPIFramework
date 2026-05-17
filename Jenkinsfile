@@ -22,19 +22,30 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                echo 'Checking out source code...'
+                echo 'Checking out source code from GitHub...'
                 checkout scm
+            }
+        }
+
+        stage('Verify WSL Ubuntu') {
+            steps {
+                echo 'Verifying WSL Ubuntu is accessible from Windows Jenkins...'
+                bat '''
+                    wsl -d Ubuntu bash -lc "echo WSL is working"
+                    wsl -d Ubuntu bash -lc "python3 --version"
+                '''
             }
         }
 
         stage('Setup Python Virtual Environment') {
             steps {
-                echo 'Setting up Python virtual environment...'
-                sh '''
-                    python3 -m venv .venv
-                    . .venv/bin/activate
-                    python --version
-                    pip install --upgrade pip
+                echo 'Creating Python virtual environment inside Jenkins workspace using WSL...'
+                bat '''
+                    for /f "delims=" %%i in ('wsl -d Ubuntu wslpath -a "%WORKSPACE%"') do set WSL_WORKSPACE=%%i
+
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && python3 -m venv .venv"
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && source .venv/bin/activate && python --version"
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && source .venv/bin/activate && pip install --upgrade pip"
                 '''
             }
         }
@@ -42,9 +53,10 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing project dependencies...'
-                sh '''
-                    . .venv/bin/activate
-                    pip install -r requirements.txt
+                bat '''
+                    for /f "delims=" %%i in ('wsl -d Ubuntu wslpath -a "%WORKSPACE%"') do set WSL_WORKSPACE=%%i
+
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && source .venv/bin/activate && pip install -r requirements.txt"
                 '''
             }
         }
@@ -52,9 +64,11 @@ pipeline {
         stage('Clean Old Reports') {
             steps {
                 echo 'Cleaning old Allure report files...'
-                sh '''
-                    rm -rf reports/allure-results/*
-                    rm -rf reports/allure-report/*
+                bat '''
+                    for /f "delims=" %%i in ('wsl -d Ubuntu wslpath -a "%WORKSPACE%"') do set WSL_WORKSPACE=%%i
+
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && rm -rf reports/allure-results/*"
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && rm -rf reports/allure-report/*"
                 '''
             }
         }
@@ -62,22 +76,10 @@ pipeline {
         stage('Run Behave Tests') {
             steps {
                 echo "Running ${params.TEST_SUITE} tests on ${params.ENVIRONMENT} environment..."
-                sh '''
-                    . .venv/bin/activate
-                    behave -D env=${ENVIRONMENT} --tags=${TEST_SUITE} \
-                    -f allure_behave.formatter:AllureFormatter \
-                    -o reports/allure-results
-                '''
-            }
-        }
+                bat '''
+                    for /f "delims=" %%i in ('wsl -d Ubuntu wslpath -a "%WORKSPACE%"') do set WSL_WORKSPACE=%%i
 
-        stage('Generate Allure Report') {
-            steps {
-                echo 'Generating Allure report...'
-                sh '''
-                    allure generate reports/allure-results \
-                    -o reports/allure-report \
-                    --clean
+                    wsl -d Ubuntu bash -lc "cd %WSL_WORKSPACE% && source .venv/bin/activate && behave -D env=%ENVIRONMENT% --tags=%TEST_SUITE% -f allure_behave.formatter:AllureFormatter -o reports/allure-results"
                 '''
             }
         }
@@ -85,9 +87,17 @@ pipeline {
 
     post {
         always {
-            echo 'Archiving Allure reports...'
+            echo 'Publishing Allure report in Jenkins...'
 
-            archiveArtifacts artifacts: 'reports/allure-report/**', fingerprint: true
+            allure([
+                includeProperties: false,
+                jdk: '',
+                properties: [],
+                reportBuildPolicy: 'ALWAYS',
+                results: [[path: 'reports/allure-results']]
+            ])
+
+            archiveArtifacts artifacts: 'reports/allure-results/**', fingerprint: true, allowEmptyArchive: true
 
             echo 'Pipeline execution completed.'
         }
