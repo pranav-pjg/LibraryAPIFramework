@@ -95,3 +95,35 @@ Install dependencies:
 
 ```bash
 make install
+
+---
+
+## Framework Completion Summary
+
+This framework is designed as an enterprise-style API automation framework using Python Behave BDD.
+
+### Completed Capabilities
+
+- BDD-based test automation using Behave
+- REST API automation using Requests
+- Add Book, Get Book, and Delete Book API coverage
+- Smoke, regression, functional, and negative test suites
+- JSON schema validation
+- Environment-specific execution using `-D env=qa`
+- Externalized test data using JSON files
+- Centralized API resources and payloads
+- Centralized utilities for API calls, logging, assertions, config, and test data
+- Allure reporting with request and response attachments
+- Local report hosting for WSL using Python HTTP server
+- Shell scripts for execution
+- Makefile shortcuts
+- Code quality checks using Black and Flake8
+- GitHub repository with feature branch workflow
+- Jenkinsfile prepared for future CI/CD integration
+
+### Recommended Daily Commands
+
+Activate environment:
+
+```bash
+source .venv/bin/activate
