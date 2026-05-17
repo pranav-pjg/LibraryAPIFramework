@@ -87,3 +87,11 @@ Run:
 
 ```bash id="d4bsbq"
 git status
+---
+
+## Makefile Commands
+
+Install dependencies:
+
+```bash
+make install
