@@ -76,3 +76,14 @@ Recommended process:
 git checkout main
 git pull origin main
 git checkout -b feature/your-feature-name
+
+
+
+---
+
+## Step 23.4 — Check Changes
+
+Run:
+
+```bash id="d4bsbq"
+git status
