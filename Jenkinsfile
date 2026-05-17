@@ -95,6 +95,7 @@ pipeline {
             echo 'Publishing Allure report in Jenkins...'
 
             allure([
+                commandline: 'Allure_2',
                 includeProperties: false,
                 jdk: '',
                 properties: [],
