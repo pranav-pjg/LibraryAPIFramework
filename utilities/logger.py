@@ -8,7 +8,6 @@ All request, response, and execution logs will be written into logs/execution.lo
 import logging
 import os
 
-
 # Get the base project directory path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,9 +36,7 @@ def get_logger():
         file_handler = logging.FileHandler(LOG_FILE_PATH)
 
         # Define log format
-        formatter = logging.Formatter(
-            "%(asctime)s - %(levelname)s - %(message)s"
-        )
+        formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
         # Attach formatter to file handler
         file_handler.setFormatter(formatter)
@@ -48,4 +45,3 @@ def get_logger():
         logger.addHandler(file_handler)
 
     return logger
-

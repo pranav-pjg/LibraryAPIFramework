@@ -27,7 +27,7 @@ def add_book_payload(isbn, aisle):
         "name": book_data["name"],
         "isbn": isbn,
         "aisle": aisle,
-        "author": book_data["author"]
+        "author": book_data["author"],
     }
 
 
@@ -48,9 +48,4 @@ def add_book_payload_with_author(isbn, aisle, author):
     book_data = get_add_book_data()["valid_book"]
 
     # Build Add Book API payload with custom author
-    return {
-        "name": book_data["name"],
-        "isbn": isbn,
-        "aisle": aisle,
-        "author": author
-    }
+    return {"name": book_data["name"], "isbn": isbn, "aisle": aisle, "author": author}

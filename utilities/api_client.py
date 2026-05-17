@@ -18,7 +18,6 @@ import allure
 
 from utilities.logger import get_logger
 
-
 # Create logger object
 logger = get_logger()
 
@@ -48,9 +47,7 @@ class APIClient:
 
         # Attach content to Allure report
         allure.attach(
-            str(content),
-            name=name,
-            attachment_type=allure.attachment_type.TEXT
+            str(content), name=name, attachment_type=allure.attachment_type.TEXT
         )
 
     @staticmethod
@@ -78,11 +75,7 @@ class APIClient:
         APIClient._attach_to_allure("POST Request Payload", payload)
 
         # Send POST request
-        response = requests.post(
-            url=url,
-            json=payload,
-            headers=headers
-        )
+        response = requests.post(url=url, json=payload, headers=headers)
 
         # Log response details
         logger.info(f"Response Status Code: {response.status_code}")
@@ -119,11 +112,7 @@ class APIClient:
         APIClient._attach_to_allure("GET Request Params", params)
 
         # Send GET request
-        response = requests.get(
-            url=url,
-            headers=headers,
-            params=params
-        )
+        response = requests.get(url=url, headers=headers, params=params)
 
         # Log response details
         logger.info(f"Response Status Code: {response.status_code}")

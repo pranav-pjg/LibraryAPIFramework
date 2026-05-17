@@ -16,6 +16,4 @@ def delete_book_payload(book_id):
         dict: Delete Book request payload
     """
 
-    return {
-        "ID": book_id
-    }
+    return {"ID": book_id}

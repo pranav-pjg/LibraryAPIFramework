@@ -30,7 +30,7 @@ def step_user_has_book_details_without_isbn(context):
     context.payload = {
         "name": "Learn Appium Automation with Java",
         "aisle": "9999",
-        "author": "John foe"
+        "author": "John foe",
     }
 
 
@@ -42,9 +42,7 @@ def step_user_sends_post_request_with_invalid_payload(context):
 
     # Send API request with invalid payload
     context.response = APIClient.post(
-        url=context.url,
-        payload=context.payload,
-        headers=context.headers
+        url=context.url, payload=context.payload, headers=context.headers
     )
 
     # Store raw response text also because some negative APIs may not return JSON
@@ -70,7 +68,9 @@ def step_add_book_should_return_error_message(context):
     """
 
     # Validate response is not empty
-    assert context.response_text.strip() != "", "Expected error response, but response was empty"
+    assert (
+        context.response_text.strip() != ""
+    ), "Expected error response, but response was empty"
 
 
 @given("user has invalid book ID for delete operation")
@@ -97,9 +97,7 @@ def step_user_sends_delete_request_with_invalid_id(context):
 
     # Send Delete Book API request
     context.response = APIClient.post(
-        url=context.url,
-        payload=context.payload,
-        headers=context.headers
+        url=context.url, payload=context.payload, headers=context.headers
     )
 
     # Store response text
@@ -122,7 +120,9 @@ def step_delete_book_should_return_error_message(context):
     """
 
     # Validate response is not empty
-    assert context.response_text.strip() != "", "Expected error response, but response was empty"
+    assert (
+        context.response_text.strip() != ""
+    ), "Expected error response, but response was empty"
 
 
 @given("user has invalid book ID for get book operation")
@@ -146,9 +146,7 @@ def step_user_sends_get_request_with_invalid_id(context):
 
     # Send Get Book API request with invalid ID parameter
     context.response = APIClient.get(
-        url=context.url,
-        headers=context.headers,
-        params={"ID": context.invalid_book_id}
+        url=context.url, headers=context.headers, params={"ID": context.invalid_book_id}
     )
 
     # Store response text
@@ -167,6 +165,6 @@ def step_add_book_should_return_empty_response(context):
     """
 
     # Validate response body is empty
-    assert context.response_text.strip() == "", (
-        f"Expected empty response, but got: {context.response_text}"
-    )
+    assert (
+        context.response_text.strip() == ""
+    ), f"Expected empty response, but got: {context.response_text}"

@@ -14,7 +14,7 @@ from utilities.assertions import (
     assert_status_code,
     assert_equals,
     assert_key_exists,
-    validate_json_schema
+    validate_json_schema,
 )
 from utilities.random_generator import generate_isbn, generate_aisle
 
@@ -44,9 +44,7 @@ def step_user_sends_post_request_to_add_book_api(context):
 
     # Send POST request using centralized API client
     context.response = APIClient.post(
-        url=context.url,
-        payload=context.payload,
-        headers=context.headers
+        url=context.url, payload=context.payload, headers=context.headers
     )
 
     # Convert response into JSON
@@ -94,11 +92,7 @@ def step_add_book_response_schema_should_be_valid(context):
     """
 
     # Build schema file path
-    schema_path = os.path.join(
-        os.getcwd(),
-        "schemas",
-        "add_book_response_schema.json"
-    )
+    schema_path = os.path.join(os.getcwd(), "schemas", "add_book_response_schema.json")
 
     # Validate response JSON against schema
     validate_json_schema(context.response_json, schema_path)
