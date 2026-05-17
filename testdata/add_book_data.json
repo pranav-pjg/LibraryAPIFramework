@@ -1,0 +1,11 @@
+{
+  "valid_book": {
+    "name": "Learn Appium Automation with Java",
+    "author": "Johnfoe"
+  },
+  "invalid_book_missing_isbn": {
+    "name": "Learn Appium Automation with Java",
+    "aisle": "9999",
+    "author": "Johnfoe"
+  }
+}

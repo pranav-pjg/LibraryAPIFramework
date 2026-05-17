@@ -1,0 +1,13 @@
+Library API Regression Suite
+
+Included Scenarios:
+1. Verify user can add a new book successfully
+2. Verify user can get book details by book ID
+3. Verify user can get book details by author name
+4. Verify user can delete an existing book successfully
+
+Execution Command:
+behave --tags=regression
+
+Allure Execution Command:
+behave --tags=regression -f allure_behave.formatter:AllureFormatter -o reports/allure-results

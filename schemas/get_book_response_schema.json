@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Get Book API Response Schema",
+  "type": "object",
+  "required": ["book_name", "isbn", "aisle"],
+  "properties": {
+    "book_name": {
+      "type": "string"
+    },
+    "isbn": {
+      "type": "string"
+    },
+    "aisle": {
+      "type": ["string", "integer"]
+    }
+  },
+  "additionalProperties": true
+}

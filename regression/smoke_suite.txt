@@ -1,0 +1,14 @@
+Library API Smoke Suite
+
+Purpose:
+Quick health check after deployment.
+
+Included Scenarios:
+1. Verify user can add a new book successfully
+2. Verify user can delete an existing book successfully
+
+Execution Command:
+behave --tags=smoke
+
+Allure Execution Command:
+behave --tags=smoke -f allure_behave.formatter:AllureFormatter -o reports/allure-results
