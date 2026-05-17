@@ -63,3 +63,16 @@ LibraryAPIFramework/
 ├── pytest.ini
 ├── README.md
 └── Jenkinsfile
+
+---
+
+## Git Workflow
+
+This project follows a feature branch based Git workflow.
+
+Recommended process:
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b feature/your-feature-name
