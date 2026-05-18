@@ -10,7 +10,7 @@ Hooks are used for:
 - Sharing common data through context
 - Reading environment value from command line
 """
-
+import allure
 from utilities.config_reader import get_base_url
 from utilities.logger import get_logger
 
@@ -51,7 +51,16 @@ def before_scenario(context, scenario):
         scenario: Current scenario object
     """
 
+    # Log scenario start in framework logs
     context.logger.info(f"Starting scenario: {scenario.name}")
+
+    # Add Allure behavior labels.
+    # These labels help Allure generate behavior-related report files like behaviors.json.
+    # This can fix the Jenkins Allure overview widget issue:
+    # 500 Unexpected token '<', "<!DOCTYPE..." is not valid JSON
+    allure.dynamic.epic("Library API Automation")
+    allure.dynamic.feature(context.feature.name)
+    allure.dynamic.story(scenario.name)
 
 
 def after_scenario(context, scenario):
